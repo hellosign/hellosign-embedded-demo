@@ -15,21 +15,21 @@
 
 1. Install dependencies and setup and the project.
 
-  ```
-  $ npm run setup
-  ```
+    ```
+    $ npm run setup
+    ```
 
 2. Start the application.
 
-  ```
-  $ npm start
-  ```
+    ```
+    $ npm start
+    ```
 
-  To watch for frontend changes, use
+    To watch for frontend changes, use
 
-  ```
-  $ npm start -- --watch
-  ```
+    ```
+    $ npm start -- --watch
+    ```
 
 3. The server should now be available at [localhost:3000](http://localhost:3000).
 
