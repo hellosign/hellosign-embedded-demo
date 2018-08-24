@@ -1,0 +1,9 @@
+{
+  "extends": "@hellosign",
+  "parser": "babel-eslint",
+  "rules": {
+    "arrow-body-style": "off",
+    "no-alert": "off",
+    "no-console": "off",
+  }
+}
