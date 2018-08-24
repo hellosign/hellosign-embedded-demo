@@ -32,3 +32,9 @@
   ```
 
 3. The server should now be available at [localhost:3000](http://localhost:3000).
+
+<br/>
+<br/>
+<hr/>
+
+&copy; 2018 [HelloSign](https://hellosign.com). All rights reserved.
