@@ -1,5 +1,6 @@
 {
   "name": "hellosign-embedded-demo",
+  "version": "1.5.1",
   "description": "A demo application for HelloSign Embedded which uses the HelloSign Node.js SDK.",
   "private": true,
   "scripts": {
