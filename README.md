@@ -1,6 +1,6 @@
 # HelloSign Embedded Demo
 
-> A demo application for [HelloSign Embedded](https://github.com/hellosign/hellosign-embedded) which uses the [HelloSign Node.js SDK](https://github.com/hellosign/hellosign-ndoejs-sdk).
+> A demo application for [HelloSign Embedded](https://github.com/hellofax/hellosign-embedded) which uses the [HelloSign Node.js SDK](https://github.com/hellosign/hellosign-nodejs-sdk).
 
 ### Prerequisites
 
