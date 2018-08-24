@@ -7,6 +7,11 @@ const redirectUrlElement = document.getElementById('redirect-url-input');
 const submitButton = document.getElementById('submit-button');
 
 /**
+ * Instantiate a new HelloSign Embedded client.
+ */
+const client = new HelloSign();
+
+/**
  * A helper function which saves the user's current config
  * to local storage for ease of use.
  */
@@ -43,21 +48,18 @@ const loadConfig = () => {
  * @param {string} signUrl
  */
 const openRequest = (signUrl) => {
-  HelloSign.init(clientIdElement.value);
-
   const options = {
-    url: signUrl,
-    allowCancel: true,
+    clientId: clientIdElement.value,
     debug: true,
-    skipDomainVerification: false,
+    verifyDomain: false,
   };
 
   // Set the redirect URL, if is it specified.
   if (redirectUrlElement.value.length) {
-    options.redirectUrl = redirectUrlElement.value;
+    options.redirectTo = redirectUrlElement.value;
   }
 
-  HelloSign.open(options);
+  client.open(signUrl, options);
 };
 
 /**
