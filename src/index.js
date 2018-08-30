@@ -51,7 +51,7 @@ const openRequest = (signUrl) => {
   const options = {
     clientId: clientIdElement.value,
     debug: true,
-    verifyDomain: false,
+    skipDomainVerification: true,
   };
 
   // Set the redirect URL, if is it specified.
