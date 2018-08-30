@@ -1,9 +1,13 @@
 {
   "extends": "@hellosign",
   "parser": "babel-eslint",
+  "env": {
+    "jquery": true
+  },
   "rules": {
     "arrow-body-style": "off",
     "no-alert": "off",
     "no-console": "off",
+    "no-param-reassign": ["error", { "props": false }],
   }
 }
