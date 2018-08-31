@@ -115,6 +115,8 @@ const loadForm = () => {
 
 const saveForm = () => {
   const obj = Array.from(form.elements).reduce((acc, field) => {
+    if (field.name === 'url') return acc; // We don't want to save this one.
+
     switch (field.type) {
       case 'checkbox':
       case 'radio': {
