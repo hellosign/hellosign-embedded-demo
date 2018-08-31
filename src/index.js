@@ -83,6 +83,20 @@ const createRequest = () => {
   });
 };
 
+const initLocales = () => {
+  Object.values(HelloSign.locales).forEach((val) => {
+    if (val === HelloSign.locales.EN_US) {
+      localeField.insertAdjacentHTML('beforeend', `
+        <option value="${val}" selected>${val}</option>
+      `);
+    } else {
+      localeField.insertAdjacentHTML('beforeend', `
+        <option value="${val}">${val}</option>
+      `);
+    }
+  });
+};
+
 const loadForm = () => {
   const config = window.localStorage.getItem('config');
 
@@ -205,20 +219,6 @@ const initShowAdvanced = () => {
   });
 };
 
-const initLocales = () => {
-  Object.values(HelloSign.locales).forEach((val) => {
-    if (val === HelloSign.locales.EN_US) {
-      localeField.insertAdjacentHTML('beforeend', `
-        <option value="${val}" selected>${val}</option>
-      `);
-    } else {
-      localeField.insertAdjacentHTML('beforeend', `
-        <option value="${val}">${val}</option>
-      `);
-    }
-  });
-};
-
 const initClient = () => {
   client.on(HelloSign.events.CLOSE, () => {
     demoContainerEl.classList.add('invisible');
@@ -235,9 +235,9 @@ const initClient = () => {
 };
 
 const init = () => {
+  initLocales();
   initForm();
   initShowAdvanced();
-  initLocales();
   initClient();
 };
 
