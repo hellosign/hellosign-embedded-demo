@@ -49,6 +49,8 @@ app.post('/create-signature-request', (req, res) => {
   });
 });
 
-app.listen(3000, () => {
-  console.log('Server running at http://locahost:3000');
+app.listen(process.env.PORT || 3000, (err) => {
+  if (!err) {
+    console.log('Server running at http://locahost:3000');
+  }
 });
