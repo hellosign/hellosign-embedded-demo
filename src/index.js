@@ -60,15 +60,15 @@ const openRequest = (signUrl) => {
 };
 
 const createRequest = () => {
+  const clientId = clientIdField.value;
+  const apiKey = apiKeyField.value;
+
   fetch('/create-signature-request', {
     method: 'POST',
     headers: new Headers({
       'Content-Type': 'application/json',
     }),
-    body: JSON.stringify({
-      clientId: clientIdField.value,
-      apiKey: apiKeyField.value,
-    }),
+    body: JSON.stringify({ clientId, apiKey }),
   }).then((res) => {
     return res.json();
   }).then((body) => {
@@ -129,8 +129,6 @@ const loadForm = () => {
 
 const saveForm = () => {
   const obj = Array.from(form.elements).reduce((acc, field) => {
-    if (field.name === 'url') return acc; // We don't want to save this one.
-
     switch (field.type) {
       case 'checkbox':
       case 'radio': {
@@ -163,12 +161,12 @@ const resetForm = () => {
 };
 
 const initForm = () => {
-  loadForm();
-
   resetButton.addEventListener('click', (evt) => {
     evt.preventDefault();
 
-    resetForm();
+    if (confirm('Are you sure you want to reset the form?')) {
+      resetForm();
+    }
   });
 
   form.addEventListener('change', () => {
@@ -187,6 +185,8 @@ const initForm = () => {
       createRequest();
     }
   });
+
+  loadForm();
 };
 
 const loadShowAdvanced = () => {
@@ -196,18 +196,12 @@ const loadShowAdvanced = () => {
     const isShown = JSON.parse(showAdvancedOptions);
 
     if (isShown) {
-      advancedOptionsEl.classList.add('show');
-
-      showAdvancedButton.textContent = 'Hide Advanced Options';
-    } else {
-      showAdvancedButton.textContent = 'Show Advanced Options';
+      $(advancedOptionsEl).collapse('show');
     }
   }
 };
 
 const initShowAdvanced = () => {
-  loadShowAdvanced();
-
   $(advancedOptionsEl).on('show.bs.collapse', () => {
     window.localStorage.setItem('showAdvancedOptions', JSON.stringify(true));
     showAdvancedButton.textContent = 'Hide Advanced Options';
@@ -217,11 +211,13 @@ const initShowAdvanced = () => {
     window.localStorage.setItem('showAdvancedOptions', JSON.stringify(false));
     showAdvancedButton.textContent = 'Show Advanced Options';
   });
+
+  loadShowAdvanced();
 };
 
 const initClient = () => {
   client.on(HelloSign.events.CLOSE, () => {
-    demoContainerEl.classList.add('invisible');
+    demoContainerEl.classList.toggle('invisible', true);
   });
 
   client.on(HelloSign.events.OPEN, () => {
