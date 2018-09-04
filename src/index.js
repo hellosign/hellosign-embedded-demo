@@ -8,6 +8,7 @@ const resetButton = document.getElementById('reset-button');
 const submitButton = document.getElementById('submit-button');
 const showAdvancedButton = document.getElementById('advanced-options-button');
 
+const allowCancelField = form.elements.namedItem('allow-cancel');
 const apiKeyField = form.elements.namedItem('api-key');
 const clientIdField = form.elements.namedItem('client-id');
 const containerField = form.elements.namedItem('container');
@@ -27,6 +28,7 @@ const openRequest = (signUrl) => {
     debug: debugField.checked,
     locale: localeField.value,
     skipDomainVerification: skipVerificationField.checked,
+    allowCancel: allowCancelField.checked,
   };
 
   // Apply timeout.
