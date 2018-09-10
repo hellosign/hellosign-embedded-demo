@@ -13,7 +13,7 @@
 
 ## Setup
 
-1. Install dependencies and setup and the project.
+1. Install dependencies and build the project.
 
     ```
     $ npm run setup
