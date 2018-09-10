@@ -2,6 +2,7 @@
   "name": "hellosign-embedded-demo",
   "version": "2.0.0",
   "description": "A demo application for HelloSign Embedded which uses the HelloSign Node.js SDK.",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "build": "webpack",
