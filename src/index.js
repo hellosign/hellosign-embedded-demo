@@ -1,80 +1,76 @@
 import HelloSign from 'hellosign-embedded';
 
+const advancedOptionsEl = document.getElementById('advanced-options');
+const demoContainerEl = document.getElementById('demo-container');
+const demoEl = document.getElementById('demo');
 const form = document.getElementById('configuration-form');
-const apiKeyElement = document.getElementById('api-key-input');
-const clientIdElement = document.getElementById('client-id-input');
-const redirectUrlElement = document.getElementById('redirect-url-input');
+const resetButton = document.getElementById('reset-button');
 const submitButton = document.getElementById('submit-button');
+const showAdvancedButton = document.getElementById('advanced-options-button');
 
-/**
- * A helper function which saves the user's current config
- * to local storage for ease of use.
- */
-const saveConfig = () => {
-  window.localStorage.setItem('config', (
-    JSON.stringify({
-      apiKey: apiKeyElement.value,
-      clientId: clientIdElement.value,
-      redirectUrl: redirectUrlElement.value,
-    })
-  ));
-};
+const allowCancelField = form.elements.namedItem('allow-cancel');
+const apiKeyField = form.elements.namedItem('api-key');
+const clientIdField = form.elements.namedItem('client-id');
+const containerField = form.elements.namedItem('container');
+const debugField = form.elements.namedItem('debug');
+const localeField = form.elements.namedItem('locale');
+const redirectToField = form.elements.namedItem('redirect-to');
+const requestingEmailField = form.elements.namedItem('requesting-email');
+const skipVerificationField = form.elements.namedItem('skip-verification');
+const timeoutField = form.elements.namedItem('timeout');
+const urlField = form.elements.namedItem('url');
 
-/**
- * A helper function which prepopulates configuration
- * fields from local storage.
- */
-const loadConfig = () => {
-  const config = window.localStorage.getItem('config');
+const client = new HelloSign();
 
-  if (config) {
-    const { apiKey, clientId, redirectUrl } = JSON.parse(config);
-
-    apiKeyElement.value = apiKey;
-    clientIdElement.value = clientId;
-    redirectUrlElement.value = redirectUrl;
-  }
-};
-
-/**
- * Initializes and opens the embedded signature request
- * with the signature URL provided by the backend.
- *
- * @param {string} signUrl
- */
 const openRequest = (signUrl) => {
-  HelloSign.init(clientIdElement.value);
-
   const options = {
-    url: signUrl,
-    allowCancel: true,
-    debug: true,
-    skipDomainVerification: false,
+    clientId: clientIdField.value,
+    debug: debugField.checked,
+    locale: localeField.value,
+    skipDomainVerification: skipVerificationField.checked,
+    allowCancel: allowCancelField.checked,
   };
 
-  // Set the redirect URL, if is it specified.
-  if (redirectUrlElement.value.length) {
-    options.redirectUrl = redirectUrlElement.value;
+  // Apply timeout.
+  if (timeoutField.value) {
+    options.timeout = timeoutField.value;
   }
 
-  HelloSign.open(options);
+  // Apply redirect URL.
+  if (redirectToField.value) {
+    options.redirectTo = redirectToField.value;
+  }
+
+  // Apply requesting email.
+  if (requestingEmailField.value) {
+    options.requestingEmail = requestingEmailField.value;
+  }
+
+  // Apply container.
+  if (containerField.checked) {
+    options.container = demoEl;
+    demoContainerEl.classList.remove('invisible');
+  } else {
+    demoContainerEl.classList.add('invisible');
+  }
+
+  // Open HelloSign Embedded.
+  client.open(signUrl, options);
+
+  // Re-enable submit button.
+  submitButton.removeAttribute('disabled');
 };
 
-/**
- * Sends a request to the backend to create a new
- * signature request using the HelloSign NodeJS SDK with
- * the given API key and Client ID.
- */
 const createRequest = () => {
+  const clientId = clientIdField.value;
+  const apiKey = apiKeyField.value;
+
   fetch('/create-signature-request', {
     method: 'POST',
-    headers: {
+    headers: new Headers({
       'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      clientId: clientIdElement.value,
-      apiKey: apiKeyElement.value,
     }),
+    body: JSON.stringify({ clientId, apiKey }),
   }).then((res) => {
     return res.json();
   }).then((body) => {
@@ -82,18 +78,102 @@ const createRequest = () => {
       openRequest(body.data.signUrl);
     } else {
       alert('Something went wrong. Did you enter your API Key and Client ID correctly?');
-    }
 
-    // Re-enable submit button.
-    submitButton.removeAttribute('disabled');
+      // Re-enable submit button.
+      submitButton.removeAttribute('disabled');
+    }
   });
 };
 
-/**
- * Sets up the demo app.
- */
-const init = () => {
-  loadConfig();
+const initLocales = () => {
+  Object.values(HelloSign.locales).forEach((val) => {
+    if (val === HelloSign.locales.EN_US) {
+      localeField.insertAdjacentHTML('beforeend', `
+        <option value="${val}" selected>${val}</option>
+      `);
+    } else {
+      localeField.insertAdjacentHTML('beforeend', `
+        <option value="${val}">${val}</option>
+      `);
+    }
+  });
+};
+
+const loadForm = () => {
+  const config = window.localStorage.getItem('config');
+
+  if (config) {
+    const obj = JSON.parse(config);
+
+    Object.entries(obj).forEach(([key, value]) => {
+      const elem = form.elements.namedItem(key);
+
+      if (elem) {
+        switch (elem.type) {
+          case 'checkbox':
+          case 'radio': {
+            elem.checked = value;
+            break;
+          }
+          case 'button':
+          case 'submit': {
+            // Do nothing
+            break;
+          }
+          default: {
+            elem.value = value;
+          }
+        }
+      }
+    });
+  }
+};
+
+const saveForm = () => {
+  const obj = Array.from(form.elements).reduce((acc, field) => {
+    switch (field.type) {
+      case 'checkbox':
+      case 'radio': {
+        return {
+          ...acc,
+          [field.name]: field.checked,
+        };
+      }
+      case 'button':
+      case 'submit': {
+        return acc;
+      }
+      default: {
+        return {
+          ...acc,
+          [field.name]: field.value,
+        };
+      }
+    }
+  }, {});
+
+  window.localStorage.setItem('config', JSON.stringify(obj));
+};
+
+const resetForm = () => {
+  window.localStorage.removeItem('config');
+  window.localStorage.removeItem('showAdvancedOptions');
+
+  window.location.reload();
+};
+
+const initForm = () => {
+  resetButton.addEventListener('click', (evt) => {
+    evt.preventDefault();
+
+    if (confirm('Are you sure you want to reset the form?')) {
+      resetForm();
+    }
+  });
+
+  form.addEventListener('change', () => {
+    saveForm();
+  });
 
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
@@ -101,10 +181,62 @@ const init = () => {
     // Disable the submit button temporarily.
     submitButton.setAttribute('disabled', true);
 
-    // Save the config and create the signature request.
-    saveConfig();
-    createRequest();
+    if (urlField.value.length) {
+      openRequest(urlField.value);
+    } else {
+      createRequest();
+    }
   });
+
+  loadForm();
+};
+
+const loadShowAdvanced = () => {
+  const showAdvancedOptions = window.localStorage.getItem('showAdvancedOptions');
+
+  if (showAdvancedOptions) {
+    const isShown = JSON.parse(showAdvancedOptions);
+
+    if (isShown) {
+      $(advancedOptionsEl).collapse('show');
+    }
+  }
+};
+
+const initShowAdvanced = () => {
+  $(advancedOptionsEl).on('show.bs.collapse', () => {
+    window.localStorage.setItem('showAdvancedOptions', JSON.stringify(true));
+    showAdvancedButton.textContent = 'Hide Advanced Options';
+  });
+
+  $(advancedOptionsEl).on('hide.bs.collapse', () => {
+    window.localStorage.setItem('showAdvancedOptions', JSON.stringify(false));
+    showAdvancedButton.textContent = 'Show Advanced Options';
+  });
+
+  loadShowAdvanced();
+};
+
+const initClient = () => {
+  client.on(HelloSign.events.CLOSE, () => {
+    demoContainerEl.classList.toggle('invisible', true);
+  });
+
+  client.on(HelloSign.events.OPEN, () => {
+    if (containerField.checked) {
+      window.scrollTo({
+        top: demoContainerEl.offsetTop,
+        behavior: 'smooth',
+      });
+    }
+  });
+};
+
+const init = () => {
+  initLocales();
+  initForm();
+  initShowAdvanced();
+  initClient();
 };
 
 init();

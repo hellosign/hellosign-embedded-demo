@@ -20,6 +20,7 @@ app.post('/create-signature-request', (req, res) => {
     test_mode: 1,
     subject: 'NDA with Acme Co.',
     message: 'Please sign this NDA and then we can discuss more.',
+    allow_decline: 1,
     signers: [
       {
         email_address: 'alice@example.com',
@@ -27,8 +28,8 @@ app.post('/create-signature-request', (req, res) => {
         order: 0,
       },
     ],
-    cc_email_addresses: ['bob@example.com', 'lawyer@example.com'],
-    files: [path.resolve(__dirname, 'files/nda.docx')],
+    cc_email_addresses: ['bob@example.com'],
+    files: [path.join(__dirname, 'files/nda.docx')],
   }).then((data) => {
     const firstSignature = data.signature_request.signatures[0];
     const signatureId = firstSignature.signature_id;
@@ -48,6 +49,8 @@ app.post('/create-signature-request', (req, res) => {
   });
 });
 
-app.listen(3000, () => {
-  console.log('Server running at http://locahost:3000');
+app.listen(process.env.PORT || 3000, (err) => {
+  if (!err) {
+    console.log('Server running at http://locahost:3000');
+  }
 });

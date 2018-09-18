@@ -1,7 +1,8 @@
 {
   "name": "hellosign-embedded-demo",
-  "version": "1.5.1",
+  "version": "2.0.0",
   "description": "A demo application for HelloSign Embedded which uses the HelloSign Node.js SDK.",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "build": "webpack",
@@ -11,7 +12,7 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.3",
-    "hellosign-embedded": "^1.5.1",
+    "hellosign-embedded": "^2.0.0-7",
     "hellosign-sdk": "^1.1.14",
     "whatwg-fetch": "^2.0.4"
   },
