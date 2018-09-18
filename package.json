@@ -12,7 +12,7 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.3",
-    "hellosign-embedded": "^2.0.0-7",
+    "hellosign-embedded": "^2.0.0-8",
     "hellosign-sdk": "^1.1.14",
     "whatwg-fetch": "^2.0.4"
   },
