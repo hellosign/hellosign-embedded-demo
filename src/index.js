@@ -86,17 +86,21 @@ const createRequest = () => {
 };
 
 const initLocales = () => {
-  Object.values(HelloSign.locales).forEach((val) => {
-    if (val === HelloSign.locales.EN_US) {
-      localeField.insertAdjacentHTML('beforeend', `
-        <option value="${val}" selected>${val}</option>
-      `);
-    } else {
-      localeField.insertAdjacentHTML('beforeend', `
-        <option value="${val}">${val}</option>
-      `);
+  for (const key in HelloSign.locales) {
+    if (HelloSign.locales.hasOwnProperty(key)) {
+      const val = HelloSign.locales[key];
+
+      if (val === HelloSign.locales.EN_US) {
+        localeField.insertAdjacentHTML('beforeend', `
+          <option value="${val}" selected>${val}</option>
+        `);
+      } else {
+        localeField.insertAdjacentHTML('beforeend', `
+          <option value="${val}">${val}</option>
+        `);
+      }
     }
-  });
+  }
 };
 
 const loadForm = () => {
@@ -105,32 +109,37 @@ const loadForm = () => {
   if (config) {
     const obj = JSON.parse(config);
 
-    Object.entries(obj).forEach(([key, value]) => {
-      const elem = form.elements.namedItem(key);
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        const val = obj[key];
+        const elem = form.elements.namedItem(key);
 
-      if (elem) {
-        switch (elem.type) {
-          case 'checkbox':
-          case 'radio': {
-            elem.checked = value;
-            break;
-          }
-          case 'button':
-          case 'submit': {
-            // Do nothing
-            break;
-          }
-          default: {
-            elem.value = value;
+        if (elem) {
+          switch (elem.type) {
+            case 'checkbox':
+            case 'radio': {
+              elem.checked = val;
+              break;
+            }
+            case 'button':
+            case 'submit': {
+              // Do nothing
+              break;
+            }
+            default: {
+              elem.value = val;
+            }
           }
         }
       }
-    });
+    }
   }
 };
 
 const saveForm = () => {
-  const obj = Array.from(form.elements).reduce((acc, field) => {
+  const formElementsArr = Array.prototype.slice.call(form.elements);
+
+  const obj = formElementsArr.reduce((acc, field) => {
     switch (field.type) {
       case 'checkbox':
       case 'radio': {
