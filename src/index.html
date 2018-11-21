@@ -37,7 +37,7 @@
                 <div class="collapse mb-5" id="advanced-options">
                   <h5>Advanced Options</h5>
                   <div class="card card-body">
-                    <div class="mb-3">
+                    <div class="py-3">
                       <div class="form-group">
                         <label for="option-url">Custom Embedded URL</label>
                         <input class="form-control" id="option-url" type="text" name="url">
@@ -69,27 +69,38 @@
                           </div>
                         </div>
                       </div>
+                      <div class="form-group">
+                        <label for="option-white-labeling">Custom White Labeling Code</label>
+                        <textarea style="font-family:monospace" class="form-control" id="option-white-labeling" name="white-labeling" rows="4"></textarea>
+                        <small class="form-text text-muted">An object used to customize the signer experience for premium users with <a href="https://app.hellosign.com/api/reference#WhiteLabeling" rel="nofollow noreferrer" target="_blank">white-labeling</a> capabilities.</small>
+                      </div>
                     </div>
-                    <div class="border-top mb-3 pt-3">
-                      <div class="form-check mt-3 mb-3">
+                    <div class="py-3">
+                      <div class="border-top"></div>
+                      <div class="form-check pt-3">
                         <input class="form-check-input" id="option-debug" type="checkbox" name="debug">
                         <label class="form-check-label" for="option-debug">Debug</label>
                         <small class="form-text text-muted">Whether or not to display debug information in the console from the HelloSign app.<br/><br/>Additionally, the internals of HelloSign Embedded utilize <a href="https://npmjs.com/package/debug"><code>debug</code></a>. For even more debug output, enter <code>localStorage.debug = 'hellosign-embedded:*';</code> into your developer console and refresh the page.</small>
                       </div>
-                      <div class="form-check mb-3">
+                      <div class="form-check pt-3">
                         <input class="form-check-input" id="option-allow-cancel" type="checkbox" name="allow-cancel" checked>
                         <label class="form-check-label" for="option-allow-cancel">Allow Cancel</label>
                         <small class="form-text text-muted">Whether or not to allow the user to cancel the signature request by showing a close button.</small>
                       </div>
-                      <div class="form-check mb-3">
+                      <div class="form-check pt-3">
                         <input class="form-check-input" id="option-skip-verification" type="checkbox" name="skip-verification" checked>
                         <label class="form-check-label" for="option-skip-verification">Skip Domain Verification</label>
                         <small class="form-text text-muted">Whether or not to skip domain verification. Useful for testing signature requests on developer domains that don't match the API app's domain (like <code>localhost</code>).</small>
                       </div>
-                      <div class="form-check">
+                      <div class="form-check pt-3">
                         <input class="form-check-input" id="option-container" type="checkbox" name="container">
                         <label class="form-check-label" for="option-container">Embed in Page</label>
                         <small class="form-text text-muted">Whether or not to embed the request into the page rather than in a modal.</small>
+                      </div>
+                      <div class="form-check pt-3">
+                        <input class="form-check-input" id="option-hide-header" type="checkbox" name="hide-header">
+                        <label class="form-check-label" for="option-hide-header">Hide Header</label>
+                        <small class="form-text text-muted">Whether or not to hide the signature request header. Only honored for customers with embedded branding.</small>
                       </div>
                     </div>
                   </div>

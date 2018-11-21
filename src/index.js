@@ -13,12 +13,14 @@ const apiKeyField = form.elements.namedItem('api-key');
 const clientIdField = form.elements.namedItem('client-id');
 const containerField = form.elements.namedItem('container');
 const debugField = form.elements.namedItem('debug');
+const hideHeaderField = form.elements.namedItem('hide-header');
 const localeField = form.elements.namedItem('locale');
 const redirectToField = form.elements.namedItem('redirect-to');
 const requestingEmailField = form.elements.namedItem('requesting-email');
 const skipVerificationField = form.elements.namedItem('skip-verification');
 const timeoutField = form.elements.namedItem('timeout');
 const urlField = form.elements.namedItem('url');
+const whiteLabelingField = form.elements.namedItem('white-labeling');
 
 const client = new HelloSign();
 
@@ -29,6 +31,8 @@ const openRequest = (signUrl) => {
     locale: localeField.value,
     skipDomainVerification: skipVerificationField.checked,
     allowCancel: allowCancelField.checked,
+    hideHeader: hideHeaderField.checked,
+    whiteLabeling: JSON.parse(whiteLabelingField.value || '{}'),
   };
 
   // Apply timeout.
