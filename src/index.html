@@ -78,19 +78,14 @@
                     <div class="py-3">
                       <div class="border-top"></div>
                       <div class="form-check pt-3">
-                        <input class="form-check-input" id="option-debug" type="checkbox" name="debug">
-                        <label class="form-check-label" for="option-debug">Debug</label>
-                        <small class="form-text text-muted">Whether or not to display debug information in the console from the HelloSign app.<br/><br/>Additionally, the internals of HelloSign Embedded utilize <a href="https://npmjs.com/package/debug"><code>debug</code></a>. For even more debug output, enter <code>localStorage.debug = 'hellosign-embedded:*';</code> into your developer console and refresh the page.</small>
-                      </div>
-                      <div class="form-check pt-3">
                         <input class="form-check-input" id="option-allow-cancel" type="checkbox" name="allow-cancel" checked>
                         <label class="form-check-label" for="option-allow-cancel">Allow Cancel</label>
                         <small class="form-text text-muted">Whether or not to allow the user to cancel the signature request by showing a close button.</small>
                       </div>
                       <div class="form-check pt-3">
-                        <input class="form-check-input" id="option-skip-verification" type="checkbox" name="skip-verification" checked>
-                        <label class="form-check-label" for="option-skip-verification">Skip Domain Verification</label>
-                        <small class="form-text text-muted">Whether or not to skip domain verification. Useful for testing signature requests on developer domains that don't match the API app's domain (like <code>localhost</code>).</small>
+                        <input class="form-check-input" id="option-test-mode" type="checkbox" name="test-mode" checked>
+                        <label class="form-check-label" for="option-test-mode">Test Mode</label>
+                        <small class="form-text text-muted">Whether or not to enable test mode. With this option enabled, domain verification will be skipped which is useful for testing signature requests on domains that don't match the API app's registered domain (like <code>localhost</code>).</small>
                       </div>
                       <div class="form-check pt-3">
                         <input class="form-check-input" id="option-container" type="checkbox" name="container">
